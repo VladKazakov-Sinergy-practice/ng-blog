@@ -1,0 +1,120 @@
+<section class="page-grid">
+  <aside class="panel">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <div>
+        <p class="section-kicker">Подписки</p>
+        <h2 class="h4 mb-0">Авторы</h2>
+      </div>
+      <button class="btn btn-primary btn-sm" type="button" (click)="openPostModal()">+ Пост</button>
+    </div>
+
+    <div class="vstack gap-2">
+      @for (user of users(); track user.id) {
+        @if (user.id !== currentUser()?.id) {
+          <article class="user-row">
+            <div>
+              <strong>{{ user.name }}</strong>
+              <p>{{ user.bio }}</p>
+            </div>
+            <button class="btn btn-sm" [class.btn-success]="userIsFollowed(user)" [class.btn-outline-secondary]="!userIsFollowed(user)" type="button" (click)="toggleFollow(user)">
+              {{ userIsFollowed(user) ? 'Вы подписаны' : 'Подписаться' }}
+            </button>
+          </article>
+        }
+      }
+    </div>
+  </aside>
+
+  <main>
+    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-4">
+      <div>
+        <p class="section-kicker">Лента</p>
+        <h1 class="h2 mb-0">Посты по вашим подпискам</h1>
+      </div>
+      <select class="form-select tag-select" [ngModel]="selectedTag()" (ngModelChange)="selectedTag.set($event)">
+        <option value="">Все теги</option>
+        @for (tag of availableTags(); track tag) {
+          <option [value]="tag">#{{ tag }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="vstack gap-3">
+      @for (post of followedPosts(); track post.id) {
+        <article class="card post-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between gap-3">
+              <div>
+                <p class="text-muted mb-1">{{ post.author?.name }} · {{ post.createdAt | date: 'dd.MM.yyyy HH:mm' }}</p>
+                <h2 class="h4">{{ post.title }}</h2>
+              </div>
+              <span class="badge h-100" [class.text-bg-success]="post.visibility === 'public'" [class.text-bg-warning]="post.visibility === 'request'">
+                {{ post.visibility === 'public' ? 'Публичный' : 'По запросу' }}
+              </span>
+            </div>
+
+            @if (post.canRead) {
+              <p class="post-body">{{ post.body }}</p>
+              <div class="tag-list">
+                @for (tag of post.tags; track tag) {
+                  <button class="tag" type="button" (click)="selectedTag.set(tag)">#{{ tag }}</button>
+                }
+              </div>
+
+              <div class="comments">
+                @for (comment of post.comments; track comment.id) {
+                  <p><strong>{{ comment.author?.name }}:</strong> {{ comment.body }}</p>
+                }
+                <form class="input-group mt-3" #commentForm="ngForm" (ngSubmit)="addComment(post, commentBody.value); commentForm.resetForm()">
+                  <input class="form-control" name="commentBody" ngModel #commentBody="ngModel" placeholder="Добавить комментарий">
+                  <button class="btn btn-outline-primary" type="submit">Отправить</button>
+                </form>
+              </div>
+            } @else {
+              <p class="post-body text-muted">Автор откроет этот пост после подтверждения запроса.</p>
+              <button class="btn btn-outline-primary" type="button" (click)="requestAccess(post)" [disabled]="post.access?.status === 'pending'">
+                {{ post.access?.status === 'pending' ? 'Запрос отправлен' : 'Запросить доступ' }}
+              </button>
+            }
+          </div>
+        </article>
+      } @empty {
+        <div class="empty-state">
+          <h2 class="h4">Лента пока пустая</h2>
+          <p>Подпишитесь на авторов слева или создайте первый пост.</p>
+        </div>
+      }
+    </div>
+  </main>
+</section>
+
+@if (isPostModalOpen()) {
+  <div class="modal-backdrop-custom" (click)="isPostModalOpen.set(false)"></div>
+  <section class="modal-custom" role="dialog" aria-modal="true" aria-labelledby="post-modal-title">
+    <form class="card" (ngSubmit)="createPost()">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 id="post-modal-title" class="h4 mb-0">Новый пост</h2>
+          <button class="btn-close" type="button" aria-label="Закрыть" (click)="isPostModalOpen.set(false)"></button>
+        </div>
+
+        <label class="form-label" for="post-title">Заголовок</label>
+        <input id="post-title" class="form-control mb-3" name="title" required [(ngModel)]="postForm.title">
+
+        <label class="form-label" for="post-body">Текст</label>
+        <textarea id="post-body" class="form-control mb-3" rows="7" name="body" required [(ngModel)]="postForm.body"></textarea>
+
+        <label class="form-label" for="post-tags">Теги через запятую</label>
+        <input id="post-tags" class="form-control mb-3" name="tags" [(ngModel)]="postForm.tags">
+
+        <label class="form-label" for="post-visibility">Доступ</label>
+        <select id="post-visibility" class="form-select mb-4" name="visibility" [(ngModel)]="postForm.visibility">
+          <option value="public">Публичный</option>
+          <option value="request">Только по запросу</option>
+        </select>
+
+        <button class="btn btn-primary w-100" type="submit">Опубликовать</button>
+      </div>
+    </form>
+  </section>
+}

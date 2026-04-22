@@ -1,0 +1,50 @@
+<section class="content-shell">
+  <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-4">
+    <div>
+      <p class="section-kicker">Публичное</p>
+      <h1 class="h2 mb-0">Все открытые посты</h1>
+    </div>
+    <select class="form-select tag-select" [ngModel]="selectedTag()" (ngModelChange)="selectedTag.set($event)">
+      <option value="">Все теги</option>
+      @for (tag of tags; track tag) {
+        <option [value]="tag">#{{ tag }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="vstack gap-3">
+    @for (post of publicPosts; track post.id) {
+      <article class="card post-card">
+        <div class="card-body">
+          <p class="text-muted mb-1">{{ post.author?.name }} · {{ post.createdAt | date: 'dd.MM.yyyy HH:mm' }}</p>
+          <h2 class="h4">{{ post.title }}</h2>
+          <p class="post-body">{{ post.body }}</p>
+
+          <div class="tag-list">
+            @for (tag of post.tags; track tag) {
+              <button class="tag" type="button" (click)="selectedTag.set(tag)">#{{ tag }}</button>
+            }
+          </div>
+
+          <div class="comments">
+            @for (comment of post.comments; track comment.id) {
+              <p><strong>{{ comment.author?.name }}:</strong> {{ comment.body }}</p>
+            }
+
+            @if (currentUser()) {
+              <form class="input-group mt-3" #commentForm="ngForm" (ngSubmit)="addComment(post, commentBody.value); commentForm.resetForm()">
+                <input class="form-control" name="commentBody" ngModel #commentBody="ngModel" placeholder="Добавить комментарий">
+                <button class="btn btn-outline-primary" type="submit">Отправить</button>
+              </form>
+            }
+          </div>
+        </div>
+      </article>
+    } @empty {
+      <div class="empty-state">
+        <h2 class="h4">Публичных постов нет</h2>
+        <p>Опубликуйте первый открытый пост в ленте.</p>
+      </div>
+    }
+  </div>
+</section>

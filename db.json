@@ -1,0 +1,153 @@
+{
+  "users": [
+    {
+      "id": "u-anna",
+      "name": "Анна Иванова",
+      "email": "anna@example.com",
+      "password": "123456",
+      "bio": "bio1"
+    },
+    {
+      "id": "u-ivan",
+      "name": "Иван Иванов",
+      "email": "ivan@example.com",
+      "password": "123456",
+      "bio": "bio2"
+    },
+    {
+      "id": "u-mila",
+      "name": "Мила Казакова",
+      "email": "mila@example.com",
+      "password": "123456",
+      "bio": "bio3"
+    },
+    {
+      "name": "Владислав Казаков",
+      "email": "stanly2008@bk.ru",
+      "password": "00000",
+      "bio": "Frontend Developer",
+      "id": "GuBvnXIOm4g"
+    }
+  ],
+  "posts": [
+    {
+      "id": "p-1",
+      "authorId": "u-anna",
+      "title": "Тестовый пост 1",
+      "body": "Тестовое описание 1",
+      "tags": ["angular", "productivity"],
+      "visibility": "public",
+      "createdAt": "2026-04-18T08:00:00.000Z",
+      "updatedAt": "2026-04-18T08:00:00.000Z"
+    },
+    {
+      "id": "p-2",
+      "authorId": "u-ivan",
+      "title": "Тестовый пост 2",
+      "body": "Тестовое описание 2",
+      "tags": ["privacy", "architecture"],
+      "visibility": "request",
+      "createdAt": "2026-04-19T11:30:00.000Z",
+      "updatedAt": "2026-04-19T11:30:00.000Z"
+    },
+    {
+      "id": "p-3",
+      "authorId": "u-mila",
+      "title": "Тестовый пост 3",
+      "body": "Тестовое описание 3",
+      "tags": ["design", "content"],
+      "visibility": "public",
+      "createdAt": "2026-04-20T13:10:00.000Z",
+      "updatedAt": "2026-04-20T13:10:00.000Z"
+    },
+    {
+      "id": "EqFxGWWvYO8",
+      "authorId": "GuBvnXIOm4g",
+      "title": "11111",
+      "body": "213",
+      "tags": [
+        "#angular",
+        "#top"
+      ],
+      "visibility": "public",
+      "createdAt": "2026-04-22T09:15:09.170Z",
+      "updatedAt": "2026-04-22T09:15:09.170Z"
+    },
+    {
+      "id": "iOJremRUxbg",
+      "authorId": "GuBvnXIOm4g",
+      "title": "",
+      "body": "",
+      "tags": [
+        "angular",
+        "123"
+      ],
+      "visibility": "public",
+      "createdAt": "2026-04-22T09:15:19.769Z",
+      "updatedAt": "2026-04-22T09:15:19.769Z"
+    }
+  ],
+  "follows": [
+    {
+      "id": "f-1",
+      "followerId": "u-anna",
+      "followingId": "u-ivan"
+    },
+    {
+      "id": "f-2",
+      "followerId": "u-anna",
+      "followingId": "u-mila"
+    },
+    {
+      "id": "FNQ0pOp7DTY",
+      "followerId": "5PyN6EzaLBk",
+      "followingId": "u-anna"
+    },
+    {
+      "id": "VYmaiirf7rU",
+      "followerId": "Zt_5jouF2dA",
+      "followingId": "5PyN6EzaLBk"
+    },
+    {
+      "id": "gnmbWVZ5DRM",
+      "followerId": "Zt_5jouF2dA",
+      "followingId": "u-mila"
+    },
+    {
+      "id": "ZanSobcDe6A",
+      "followerId": "Zt_5jouF2dA",
+      "followingId": "u-ivan"
+    },
+    {
+      "id": "besUvm3MzZ0",
+      "followerId": "Zt_5jouF2dA",
+      "followingId": "u-anna"
+    }
+  ],
+  "comments": [
+    {
+      "id": "c-1",
+      "postId": "p-1",
+      "authorId": "u-mila",
+      "body": "comments 1",
+      "createdAt": "2026-04-18T10:00:00.000Z"
+    },
+    {
+      "id": "hz2pZana5KM",
+      "postId": "p-3",
+      "authorId": "Zt_5jouF2dA",
+      "body": "4324234",
+      "createdAt": "2026-04-22T09:00:37.686Z"
+    }
+  ],
+  "accessRequests": [
+    {
+      "id": "OjVA7SnwuJ8",
+      "postId": "p-2",
+      "requesterId": "Zt_5jouF2dA",
+      "status": "pending",
+      "createdAt": "2026-04-22T09:00:12.547Z"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

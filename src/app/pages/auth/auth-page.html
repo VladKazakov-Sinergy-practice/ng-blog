@@ -1,0 +1,46 @@
+<section class="auth-layout">
+  <form class="card auth-card shadow-sm" (ngSubmit)="submit()">
+    <div class="card-body p-4">
+      <div class="btn-group w-100 mb-4" role="group" aria-label="Режим авторизации">
+        <button
+          type="button"
+          class="btn"
+          [class.btn-primary]="mode() === 'login'"
+          [class.btn-outline-primary]="mode() !== 'login'"
+          (click)="mode.set('login')">
+          Вход
+        </button>
+        <button
+          type="button"
+          class="btn"
+          [class.btn-primary]="mode() === 'register'"
+          [class.btn-outline-primary]="mode() !== 'register'"
+          (click)="mode.set('register')">
+          Регистрация
+        </button>
+      </div>
+
+      @if (mode() === 'register') {
+        <label class="form-label" for="name">Имя</label>
+        <input id="name" class="form-control mb-3" name="name" [ngModel]="name()" (ngModelChange)="name.set($event)" required>
+
+        <label class="form-label" for="bio">О себе</label>
+        <textarea id="bio" class="form-control mb-3" name="bio" rows="3" [ngModel]="bio()" (ngModelChange)="bio.set($event)" required></textarea>
+      }
+
+      <label class="form-label" for="email">Почта</label>
+      <input id="email" class="form-control mb-3" type="email" name="email" [ngModel]="email()" (ngModelChange)="email.set($event)" required>
+
+      <label class="form-label" for="password">Пароль</label>
+      <input id="password" class="form-control mb-3" type="password" name="password" [ngModel]="password()" (ngModelChange)="password.set($event)" required>
+
+      @if (error()) {
+        <div class="alert alert-danger py-2">{{ error() }}</div>
+      }
+
+      <button class="btn btn-primary w-100" type="submit" [disabled]="isLoading()">
+        {{ mode() === 'login' ? 'Войти' : 'Создать аккаунт' }}
+      </button>
+    </div>
+  </form>
+</section>
